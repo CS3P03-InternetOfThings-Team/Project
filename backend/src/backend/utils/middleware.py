@@ -28,7 +28,6 @@ async def validate_user_authorizarion_header(request: Request) -> Request:
 async def validate_current_user_id_admin(request: Request) -> Request: 
     user: User | None = getattr(request.headers, "current_user", None)
     if not isinstance(user, User):
-        print("Set current_user to request headers")
         raise InternalServerException("Internal Server Error")
 
     is_user_admin = bool(await get_admin_by_user_id(user.id))

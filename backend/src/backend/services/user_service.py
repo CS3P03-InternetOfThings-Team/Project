@@ -7,6 +7,8 @@ from pydantic import BaseModel, EmailStr
 from passlib.context import CryptContext
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+
+
 class RegisterFormBodyRequest(BaseModel):
     name: str
     email: EmailStr
@@ -24,7 +26,7 @@ async def get_all_users():
 
 async def register_user(signup_data: RegisterFormBodyRequest):
     _id = ObjectId()
-    email = EmailStr(signup_data.email)
+    email = signup_data.email
     user_data = {
         "_id": _id,
         "name": signup_data.name,
@@ -40,5 +42,6 @@ async def register_user(signup_data: RegisterFormBodyRequest):
     }
     auth = parse_user_auth(auth_user_data)
     await store_auth_user(auth)
+    print("user", user)
     return user
     

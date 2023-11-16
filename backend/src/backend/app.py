@@ -1,11 +1,12 @@
 from dotenv import load_dotenv
-load_dotenv(".backend.env")
+load_dotenv()
 
 from fastapi_mqtt.fastmqtt import FastMQTT
 from fastapi import FastAPI
 from fastapi_mqtt.config import MQTTConfig
 
 from fastapi.middleware.cors import CORSMiddleware
+from os import environ
 
 from src.backend.routers import (
     ping_router,
@@ -17,7 +18,7 @@ app = FastAPI(title="IOTProject")
 
 config = {}
 
-mqtt_config = MQTTConfig(**config)
+mqtt_config = MQTTConfig(host=environ["MQTT_HOST"], port=int(environ["MQTT_PORT"]))
 
 mqtt = FastMQTT(config=mqtt_config)
 
@@ -49,7 +50,6 @@ def subscribe(client, mid, qos, properties):
 @app.get("/")
 async def func():
     mqtt.publish("/mqtt", "Hello from Fastapi") #publishing mqtt topic
-
     return {"result": True,"message":"Published" }
 
 app.add_middleware(
