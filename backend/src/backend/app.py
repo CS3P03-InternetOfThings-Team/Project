@@ -34,7 +34,7 @@ async def message(client, topic, payload, qos, properties):
     print("Received message: ",topic, payload.decode(), qos, properties)
     return 0
 
-@mqtt.subscribe("my/mqtt/topic/#")
+@mqtt.subscribe("/mqtt")
 async def message_to_topic(client, topic, payload, qos, properties):
     print("Received message to specific topic: ", topic, payload.decode(), qos, properties)
 
@@ -47,7 +47,7 @@ def subscribe(client, mid, qos, properties):
     print("subscribed", client, mid, qos, properties)
 
 
-@app.get("/")
+@app.get("/publishmqtt")
 async def func():
     mqtt.publish("/mqtt", "Hello from Fastapi") #publishing mqtt topic
     return {"result": True,"message":"Published" }
