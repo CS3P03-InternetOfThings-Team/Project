@@ -19,3 +19,20 @@ services:
       - "9001:9001"
     volumes:
       - ./config:/mqt-broker/config:rw
+
+#   chromadb: 
+#     container_name: iot-project-chromadb
+#     build:
+#       context: chromadb
+#       dockerfile: Dockerfile
+#     volumes:
+#       - ./chromadb:/chromadb
+#       - index_data:/index_data
+#     environment:
+#       - IS_PERSISTENT=TRUE
+#     network_mode: "host"
+#     ports:
+#       - 8000:8000
+# volumes:
+#   index_data:
+#     driver: local

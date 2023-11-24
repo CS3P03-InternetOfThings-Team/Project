@@ -8,6 +8,11 @@ from fastapi_mqtt.config import MQTTConfig
 from fastapi.middleware.cors import CORSMiddleware
 from os import environ
 
+from chromadb import Client
+client = Client()
+collection = client.create_collection("all-my-documents")
+# https://www.trychroma.com/
+
 from src.backend.routers import (
     ping_router,
     auth_router,
