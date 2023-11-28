@@ -2,6 +2,8 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import HttpContract from "./contracts/http.contract";
 import { IUseAuth, useAuth as appAuthorization } from "./auth";
+import { IUseText, useText  as appText } from "./text";
+
 
 interface ApplicationDeps {
   http: HttpContract;
@@ -10,6 +12,7 @@ interface ApplicationDeps {
 
 interface IApplicationContext {
   auth?: IUseAuth;
+  text?: IUseText;
   session?: any;
 }
 
@@ -18,21 +21,9 @@ const ApplicationContext = createContext<IApplicationContext>({});
 const AppProvider = ({ http, children }: ApplicationDeps) => {
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState(null);
-  // const tokenRefreshRef = useRef(null);
 
   const auth = appAuthorization(http);
-  // const checkSessionIsValid = async () => {
-
-  // }
-
-  // useEffect(() => {
-  //   const ttlMin = 10; // 10 minutes by default
-  //   const ttlMs = 60000 * ttlMin;
-  //   tokenRefreshRef.current = setInterval(checkSessionIsValid, ttlMs);
-  //   return () => {
-  //     clearInterval(tokenRefreshRef.current);
-  //   }
-  // }, []);
+  const text = appText(http);
 
 
   const getSession = async () => {
@@ -56,7 +47,7 @@ const AppProvider = ({ http, children }: ApplicationDeps) => {
 
   return (
     <ApplicationContext.Provider
-      value={{ auth, session }}
+      value={{ auth, session, text }}
     >
       {  
         !loading && children 
@@ -77,6 +68,14 @@ export const useAuth = (): IUseAuth => {
   }
   return auth;
 };
+
+export const useText = (): IUseText => {
+  const text = useContext(ApplicationContext).text;
+  if(!text){
+    throw new Error("You must use useAuth inside ApplicationContext!");
+  }
+  return text;
+}
 
 // export const useApp = (): IUseApp => {
 //   const app = useContext(ApplicationContext).app;

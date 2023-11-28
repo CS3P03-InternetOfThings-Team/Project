@@ -35,10 +35,13 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], retrie
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub", None)
+        print("email", email)
         if email is None:
             raise credentials_exception
         token_data = TokenData(email=email)
-    except JWTError:
+    except JWTError as e:
+        print(e)
+
         raise credentials_exception
     user = await get_user_by_filter({"email": token_data.email})
     if user is None:

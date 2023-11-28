@@ -3,7 +3,7 @@ from typing import Callable
 from fastapi.routing import APIRoute
 from fastapi import Request, Response
 
-from backend.utils.middleware import validate_user_authorizarion_header
+from src.backend.utils.middleware import validate_user_authorizarion_header
 
 
 
