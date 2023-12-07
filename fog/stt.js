@@ -9,15 +9,6 @@ speechConfig.speechRecognitionLanguage = "es-PE";
 
 export const getTextFromSpeech = ({ filename }) => {
   return new Promise(async (resolve) => {
-    // let pushStream = sdk.AudioInputStream.createPushStream();
-    // fs.createReadStream(filename, { start: 44 })
-    //   .on("data", function (arrayBuffer) {
-    //     pushStream.write(arrayBuffer.slice());
-    //   })
-    //   .on("end", function () {
-    //     pushStream.close();
-    //   });
-    // let audioConfig = sdk.AudioConfig.fromStreamInput(pushStream);
     const audioBuffer = await readFile(filename);
     let audioConfig = sdk.AudioConfig.fromWavFileInput(audioBuffer);
     let speechRecognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
